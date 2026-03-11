@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 # Configures Nginx with custom X-Served-By header using the server hostname
+export DEBIAN_FRONTEND=noninteractive
 sudo apt-get update -y
 sudo apt-get install -y nginx
 sudo sed -i '/server_name _;/a\\tadd_header X-Served-By $hostname;' /etc/nginx/sites-available/default
 sudo nginx -t
+sudo systemctl enable nginx
 sudo systemctl restart nginx

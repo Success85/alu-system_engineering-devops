@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # Installs and configures HAProxy to load balance between web-01 and web-02
+export DEBIAN_FRONTEND=noninteractive
 sudo apt-get update -y
 sudo apt-get install -y haproxy
-
+sudo sed -i 's/ENABLED=0/ENABLED=1/' /etc/default/haproxy
 sudo bash -c 'cat > /etc/haproxy/haproxy.cfg << HAPROXY
 global
     log /dev/log local0
@@ -29,6 +30,5 @@ backend http_back
     server 7051-web-01 44.211.47.49:80 check
     server 7051-web-02 3.92.183.132:80 check
 HAPROXY'
-
 sudo systemctl enable haproxy
 sudo systemctl restart haproxy
